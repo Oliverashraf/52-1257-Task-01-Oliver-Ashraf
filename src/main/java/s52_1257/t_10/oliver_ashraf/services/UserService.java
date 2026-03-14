@@ -13,7 +13,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // Constructor injection
+    public UserService() {
+        this.userRepository = new UserRepository();
+    }
+
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -33,7 +36,6 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        // Ensure ID and createdAt are handled if not provided (though model constructor does this)
         return userRepository.save(user);
     }
 

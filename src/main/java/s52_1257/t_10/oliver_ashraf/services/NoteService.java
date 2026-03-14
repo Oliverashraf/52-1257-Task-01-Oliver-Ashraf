@@ -13,7 +13,10 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
 
-    // Constructor injection
+    public NoteService() {
+        this.noteRepository = new NoteRepository();
+    }
+
     public NoteService(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
     }
@@ -30,7 +33,6 @@ public class NoteService {
     public List<Note> getNotesByUserId(String userId) {
         List<Note> notes = noteRepository.findByUserId(userId);
         if (notes.isEmpty()) {
-            // Requirement says throw 404 if not found
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No notes found for this user");
         }
         return notes;
@@ -49,5 +51,9 @@ public class NoteService {
         if (!noteRepository.deleteById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found");
         }
+    }
+    public Note getNoteByTitle(String title) {
+        return noteRepository.findByTitle(title)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found"));
     }
 }

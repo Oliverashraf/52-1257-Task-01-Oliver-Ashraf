@@ -87,4 +87,9 @@ public class NoteRepository {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to write to notes.json");
         }
     }
+    public Optional<Note> findByTitle(String title) {
+        return notes.stream()
+                .filter(n -> n.getTitle().equalsIgnoreCase(title))
+                .findFirst();
+    }
 }

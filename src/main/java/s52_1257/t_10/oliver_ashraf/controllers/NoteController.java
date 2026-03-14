@@ -29,16 +29,13 @@ public class NoteController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public Note createNote(@RequestBody Note note) {
         return noteService.createNote(note);
     }
 
     @GetMapping("/search")
-    public List<Note> searchByTitle(@RequestParam String title) {
-        return noteService.getAllNotes().stream()
-                .filter(n -> n.getTitle().toLowerCase().contains(title.toLowerCase()))
-                .collect(Collectors.toList());
+    public Note searchByTitle(@RequestParam String title) {
+        return noteService.getNoteByTitle(title);
     }
 
     @PutMapping("/{id}")
@@ -47,8 +44,10 @@ public class NoteController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable String id) {
         noteService.deleteNote(id);
     }
+
+
+
 }

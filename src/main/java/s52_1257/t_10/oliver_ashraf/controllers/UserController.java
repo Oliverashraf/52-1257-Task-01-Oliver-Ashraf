@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import s52_1257.t_10.oliver_ashraf.models.User;
 import s52_1257.t_10.oliver_ashraf.services.UserService;
+import s52_1257.t_10.oliver_ashraf.services.NoteService;
+import s52_1257.t_10.oliver_ashraf.models.Note;
 
 import java.util.List;
 
@@ -12,10 +14,21 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final NoteService noteService;
 
-    // Constructor injection
+    public UserController() {
+        this.userService = new UserService();
+        this.noteService = new NoteService();
+    }
+
     public UserController(UserService userService) {
         this.userService = userService;
+        this.noteService = new NoteService();
+    }
+
+    public UserController(UserService userService, NoteService noteService) {
+        this.userService = userService;
+        this.noteService = noteService;
     }
 
     @GetMapping
@@ -29,7 +42,6 @@ public class UserController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
@@ -40,7 +52,6 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
     }
@@ -48,5 +59,10 @@ public class UserController {
     @GetMapping("/search")
     public User searchByUsername(@RequestParam String username) {
         return userService.getUserByUsername(username);
+    }
+
+    @GetMapping("/{id}/notes")
+    public List<Note> getNotesByUserId(@PathVariable String id) {
+        return noteService.getNotesByUserId(id);
     }
 }

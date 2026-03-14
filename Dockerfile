@@ -5,8 +5,7 @@ FROM eclipse-temurin:25.0.2_10-jdk
 WORKDIR /app
 
 # 3. Copy the JAR (ensure the name matches your target folder result)
-COPY target/*.jar app.jar
-
+COPY target/*.jar /app/app.jar
 # 4. Copy JSON data files into the directory specified in the task
 RUN mkdir -p /data
 COPY src/main/resources/users.json /data/users.json
